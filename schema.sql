@@ -9,7 +9,7 @@ DROP DATABASE IF EXISTS bamazon;
      item_id int not null auto_increment,
      product_name varchar(40) not null,
      department_name varchar(40) not null,
-     price ($) decimal (10,2) not null,
+     price_usd decimal (10,2) not null,
      stock_quantity decimal (10,2) not null,
      primary key (item_id)
     );
