@@ -70,7 +70,7 @@ function promptManager() {
     		case 'addInventory':
     			return addInventory();
     		case 'newProduct':
-    			return ;
+    			return newProduct();
     	}
 
     })
@@ -101,6 +101,7 @@ function displayInventory() {
 		
 		
 	})
+    promptManager();
 }
 
 function dsplayLowInventory() {
@@ -129,6 +130,7 @@ function dsplayLowInventory() {
         console.log("--------------------- -------------------------- ---------------------- ------------------------------\n");
 
 	})
+    promptManager();
 }
 
 function addInventory() {
@@ -205,10 +207,58 @@ function addInventory() {
 	            
     })
 
-
+    promptManager();
 }
 
 
+function newProduct() {
+    // body...
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'product_name',
+            message: 'Please enter the new product name.',
+        },
+        {
+            type: 'input',
+            name: 'department_name',
+            message: 'Which department does the new product belong to?',
+        },
+        {
+            type: 'input',
+            name: 'price_usd',
+            message: 'What is the price per unit?',
+            validate: checkInput
+        },
+        {
+            type: 'input',
+            name: 'stock_quantity',
+            message: 'How many items are in stock?',
+            validate: checkInput
+        }
+    ]).then(function(input) {
+
+        console.log('Adding New Item: \n    product_name = ' + input.product_name + '\n' +
+            '    department_name = ' + input.department_name + '\n' +
+            '    price_USD = ' + input.price_usd + '\n' +
+            '    stock_quantity = ' + input.stock_quantity);
+
+        console.log('-------------------')
+      
+         // Create the insertion query string
+        var queryInv = 'INSERT INTO products SET ?';
+
+        // Add new product to the db
+        connection.query(queryInv, input, function (error, results) {
+            if (error) throw error;
+
+            console.log('New product has been added to the inventory under Item ID ' + results.insertId + '.');
+            console.log("\n---------------------------------------------------------------------\n");
+
+          promptManager();
+        });
+    })
+}
 
 
 
